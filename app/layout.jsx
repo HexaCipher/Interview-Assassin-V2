@@ -1,20 +1,20 @@
-import { Geist } from "next/font/google";
+import { Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
 export const metadata = {
-  title: "Intervio | Master Technical Interviews",
-  description: "Join a community of learners who turned preparation into success.",
+  title: "Interview Assassin",
+  description: "AI-powered adaptive interview simulator",
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={geistSans.className}>
-      <body className="bg-background text-foreground antialiased min-h-screen">
+    <html lang="en" className={geistMono.variable}>
+      <body className="bg-background text-foreground antialiased">
         {children}
       </body>
     </html>

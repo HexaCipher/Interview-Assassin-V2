@@ -50,9 +50,11 @@ function InterviewContent() {
 
   const [currentQ, setCurrentQ] = useState(0);
   const [question, setQuestion] = useState("");
+  const [questionId, setQuestionId] = useState("");
   const [answer, setAnswer] = useState("");
   const [evaluation, setEvaluation] = useState(null);
   const [scores, setScores] = useState([]);
+  const [askedQuestionIds, setAskedQuestionIds] = useState([]);
   const [error, setError] = useState("");
 
   // Load question when currentQ changes
@@ -69,7 +71,7 @@ function InterviewContent() {
         const res = await fetch("/api/generate-question", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ role, difficulty }),
+          body: JSON.stringify({ role, difficulty, excludeIds: askedQuestionIds }),
         });
 
         const data = await res.json();
@@ -81,6 +83,8 @@ function InterviewContent() {
         }
 
         setQuestion(data.question);
+        setQuestionId(data.questionId);
+        setAskedQuestionIds(prev => [...prev, data.questionId]);
         setPhase("answering");
       } catch (err) {
         console.error("[loadQuestion]", err);
@@ -105,7 +109,7 @@ function InterviewContent() {
       const res = await fetch("/api/evaluate-answer", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ role, question, answer }),
+        body: JSON.stringify({ questionId, answer, difficulty }),
       });
 
       const data = await res.json();
